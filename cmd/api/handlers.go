@@ -31,10 +31,7 @@ func (app *application) getUserReviewCount(w http.ResponseWriter, req *http.Requ
 		app.serverError(w, req, err)
 	}
 
-	query := datastore.NewQuery(userKind)
-	query.FilterField("book_id", "=", b)
-	query.Namespace(app.config.env)
-	query.KeysOnly()
+	query := datastore.NewQuery(userKind).FilterField("book_id", "=", b).Namespace(app.config.env).KeysOnly()
 
 	if limit != "" {
 		limitInt, err := strconv.Atoi(limit)
@@ -45,6 +42,9 @@ func (app *application) getUserReviewCount(w http.ResponseWriter, req *http.Requ
 	}
 
 	keys, err := app.dsClient.GetAll(req.Context(), query, nil)
+	if err != nil {
+		app.serverError(w, req, err)
+	}
 
 	type ApiResponse struct {
 		UserCount int `json:"user_count"`
