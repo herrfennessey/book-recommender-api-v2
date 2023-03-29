@@ -32,7 +32,7 @@ func (app *application) getUserReviewCount(w http.ResponseWriter, req *http.Requ
 	}
 
 	query := datastore.NewQuery(userKind)
-	query.FilterField("Value", "=", b)
+	query.FilterField("book_id", "=", b)
 	query.Namespace(app.config.env)
 	query.KeysOnly()
 
