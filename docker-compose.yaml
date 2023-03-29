@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    environment:
+      PORT: 8500
+      DATASTORE_EMULATOR_HOST: datastore:8900
+    ports:
+      - "8500:8500"
+
+  datastore:
+    image: "gcr.io/google.com/cloudsdktool/google-cloud-cli:latest"
+    command: "gcloud beta emulators datastore start 
+    --project=test-project --host-port=0.0.0.0:8900 --no-store-on-disk
+    --verbosity=error --consistency=1.0"
+    ports:
+      - "8900:8900"
